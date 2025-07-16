@@ -42,47 +42,10 @@ void main(void) {
         PORTC &= ~(digits[i]);
         i++;
     }*/
-    for(unsigned int k = 0; k<5000;k++)
-    {
-        i = num / 10;
-        j = num % 10;
-        
-        PORTB &= ~digits[i];
-        PORTC &= ~digits[j];
-    }
-    for(unsigned int k = 0; k<5000;k++)
-    {
-        PORTB |= digits[i];
-        PORTC |= digits[j];
-               
-    }
-
-    for(unsigned int k = 0; k<5000;k++)
-    {
-        i = num / 10;
-        j = num % 10;
-        
-        PORTB &= ~digits[i];
-        PORTC &= ~digits[j];
-    }
-    for(unsigned int k = 0; k<5000;k++)
-    {
-        PORTB |= digits[i];
-        PORTC |= digits[j];
-               
-    }
-    for(unsigned int k = 0; k<5000;k++)
-    {
-        i = num / 10;
-        j = num % 10;
-        
-        PORTB &= ~digits[i];
-        PORTC &=  ~digits[j];
-    }
     while(1)
     {
-        PORTB &= ~digits[i];
-        PORTC &= ~digits[j];
+        PORTB |= digits[i];
+        PORTC |= digits[j];          
     }
 
     return;
