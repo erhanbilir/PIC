@@ -53,3 +53,12 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+*.workspace
+.Project Backups/
+.build/
+.dist/
+.nbproject/
+*.mc3
+Makefile
+*.yml
