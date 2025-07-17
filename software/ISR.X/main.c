@@ -29,7 +29,7 @@ void main(void) {
     INTCONbits.GIEL = 1;    /*!< Enable low prio. interrupts */
     
     INTCON2bits.INTEDG1 = 1;    /*!< Rising edge triggered */
-    INTCON3bits.INT1IP = 0;     /*!< Configure as low prio. */
+    INTCON3bits.INT1IP = 1;     /*!< Configure as high prio. */
     INTCON3bits.INT1IF = 0;     /*!< Clear the flag */
     INTCON3bits.INT1IE = 1;     /*!< Enable the interrupt */
     
@@ -47,17 +47,26 @@ void main(void) {
 
 void __interrupt(low_priority) ISR_low()
 {
-    LATC = 0x03;
-    __delay_ms(2000);
-    
-    INTCON3bits.INT1IF = 0;
+
 }
 
 void __interrupt(high_priority) ISR_high()
 {
-    LATC = 0x18;
-    __delay_ms(2000);
+    if(INTCONbits.INT0IF == 1 && INTCONbits.INT0IE == 1)
+    {
+        LATC = 0x18;
+        __delay_ms(2000);
     
-    INTCONbits.INT0IF = 0;
+        INTCONbits.INT0IF = 0;
+    }
+    
+    if(INTCON3bits.INT1IF == 1 && INTCON3bits.INT1IE == 1)
+    {
+        LATC = 0x03;
+        __delay_ms(2000);
+
+        INTCON3bits.INT1IF = 0;
+    }
 }
+
 
