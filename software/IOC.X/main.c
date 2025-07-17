@@ -34,6 +34,7 @@ void main(void) {
     
     IOCBbits.IOCB4 = 1;
     IOCBbits.IOCB5 = 1;
+    PORTB; /*!< Update hidden IOC register */
     INTCON2bits.RBIP = 1;
     INTCONbits.RBIF = 0;
     INTCONbits.RBIE = 1;
