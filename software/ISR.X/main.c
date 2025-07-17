@@ -39,39 +39,6 @@ void main(void) {
     
     while(1)
     {
-        /*switch(selected_pin)
-        {
-            case 0:
-                LATCbits.LATC0 = 1;
-                __delay_ms(500);
-                LATCbits.LATC0 = 0;
-                __delay_ms(500);
-                break;
-            case 1:
-                LATCbits.LATC1 = 1;
-                __delay_ms(500);
-                LATCbits.LATC1 = 0;
-                __delay_ms(500);
-                break;
-            case 2:
-                LATCbits.LATC2 = 1;
-                __delay_ms(500);
-                LATCbits.LATC2 = 0;
-                __delay_ms(500);
-                break;
-            case 3:
-                LATCbits.LATC3 = 1;
-                __delay_ms(500);
-                LATCbits.LATC3 = 0;
-                __delay_ms(500);
-                break;
-            case 4:
-                LATCbits.LATC4 = 1;
-                __delay_ms(500);
-                LATCbits.LATC4 = 0;
-                __delay_ms(500);
-                break;
-        }*/
         LATC = 0x1F;
     }
     
@@ -80,12 +47,6 @@ void main(void) {
 
 void __interrupt(low_priority) ISR_low()
 {
-    /*selected_pin++;
-    
-    if (selected_pin == 5)
-        selected_pin = 0;
-    
-    __delay_ms(50);*/
     LATC = 0x03;
     __delay_ms(2000);
     
@@ -94,12 +55,6 @@ void __interrupt(low_priority) ISR_low()
 
 void __interrupt(high_priority) ISR_high()
 {
-    /*selected_pin--;
-    
-    if (selected_pin == -1)
-        selected_pin = 4;
-    
-    __delay_ms(50);*/
     LATC = 0x18;
     __delay_ms(2000);
     
