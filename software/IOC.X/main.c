@@ -61,14 +61,12 @@ void __interrupt(high_priority) ISR_high()
         char current_PORTB_RB4 = (current_PORTB & 0b00010000) >> 4;
         
         /*!< If a pin went from low to high state*/
-        if (previous_PORTB_RB5 == 0 && current_PORTB_RB5 == 1  \
-            || previous_PORTB_RB4 == 0 && current_PORTB_RB4 == 1)
+        if (previous_PORTB_RB5 == 0 && current_PORTB_RB5 == 1)
         {
             LATDbits.LATD2 = 1;
             LATDbits.LATD3 = 0;
         }
-        else if (previous_PORTB_RB5 == 1 && current_PORTB_RB5 == 0 \
-                 || previous_PORTB_RB4 == 1 && current_PORTB_RB4 == 0 )
+        else if (previous_PORTB_RB4 == 0 && current_PORTB_RB4 == 1)
         {
             LATDbits.LATD2 = 0;
             LATDbits.LATD3 = 1;
