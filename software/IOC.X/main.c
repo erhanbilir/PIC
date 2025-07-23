@@ -34,7 +34,7 @@ void main(void) {
     
     IOCBbits.IOCB4 = 1;
     IOCBbits.IOCB5 = 1;
-    PORTB; /*!< Update hidden IOC register */
+    PORTB;                  /*!< Update hidden IOC register */
     INTCON2bits.RBIP = 1;
     INTCONbits.RBIF = 0;
     INTCONbits.RBIE = 1;
@@ -43,19 +43,21 @@ void main(void) {
         LATDbits.LATD2 = 1;
         LATDbits.LATD3 = 1;
     }
-    
+
     return;
 }
 
 void __interrupt(high_priority) ISR_high()
 {
+    /*!< Read the current PORTB */
+    char current_PORTB = PORTB;
+    
     if(INTCONbits.RBIF == 1 && INTCONbits.RBIE == 1)
     {
         /*!< Delay for debouncing */
         __delay_ms(50);
         
-        /*!< Read the current PORTB */
-        char current_PORTB = PORTB;
+        
         
         /*!< Extract the RB5 and RB4 pins from current PORTB*/
         char current_PORTB_RB5 = (current_PORTB & 0b00100000) >> 5;
