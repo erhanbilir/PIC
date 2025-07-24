@@ -10,6 +10,7 @@
 #include "UART.h"
 
 void __interrupt() ISR(void);
+__IO bool uartTimeout = false;
 
 void main(void) {
     UART_Init_TypeDef UART1;
@@ -22,7 +23,7 @@ void main(void) {
     
     UART_WriteString("UART Ready\r\n");
     
-    char line[32];
+    char line[64];
     
     while(1)
     {
@@ -37,6 +38,13 @@ void main(void) {
 
 void __interrupt() ISR(void)
 {
-    ISR_UART();
+    if (PIR1bits.RCIF || PIR1bits.TXIF)
+    {
+        ISR_UART();
+    }
+    if(INTCONbits.TMR0IE)
+    {
+        ISR_TIMER();
+    }
 }
 

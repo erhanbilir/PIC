@@ -33,6 +33,7 @@
 
 #include "ISR.h"
 #include "UART.h"
+#include "TIMER.h"
 
 #endif	/* CONFIG_H */
 

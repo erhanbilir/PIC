@@ -16,7 +16,12 @@
 
 #define RX_BUFFER_SIZE 32
 #define TX_BUFFER_SIZE 32
-#define LINE_BUFFER_SIZE 32
+#define LINE_BUFFER_SIZE 64
+
+#define BLOCKING 1
+#define NON_BLOCKING 0
+
+#define UART_TX_TIMEOUT 100000U 
 
 /**
  * @brief Structure for UART configuration parameters
@@ -38,6 +43,8 @@ void UART_ReceiveHandler(uint8_t data);
 bool UART_Available(void);
 uint8_t UART_ReadChar(void);
 bool UART_ReadLine(char *outBuffer);
+
+extern volatile bool uartTimeout;
 
 #endif	/* UART_H */
 

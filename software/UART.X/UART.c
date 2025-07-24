@@ -66,10 +66,10 @@ void ISR_UART(void)
     /*!< TX Interrupt */
     if(PIR1bits.TXIF && PIE1bits.TXIE)
     {
-        if(txTail != txHead)
+        if(txHead != txTail)
         {
-            TXREG = txBuffer[txTail];
-            txTail = (txTail + 1) % TX_BUFFER_SIZE;
+            TXREG = txBuffer[txHead];
+            txHead = (txHead + 1) % TX_BUFFER_SIZE;
         }
         else
         {
@@ -111,12 +111,22 @@ void UART_StartTransmission(void)
  */
 void UART_WriteChar(uint8_t data)
 {
-    uint8_t nextHead = (txHead + 1) % TX_BUFFER_SIZE;
+    uint8_t nextTail = (txTail + 1) % TX_BUFFER_SIZE;
     
-    while(nextHead == txTail);
+    if(nextTail == txHead)
+    {
+        TIMER0_init();
+
+        while(nextTail == txHead && !uartTimeout);
+        if(uartTimeout)
+        {
+            txHead = (txHead + 1) % TX_BUFFER_SIZE;
+            //return;
+        }
+    }
     
-    txBuffer[txHead] = data;
-    txHead = nextHead;
+    txBuffer[txTail] = data;
+    txTail = nextTail;
     
     UART_StartTransmission();
 }
@@ -126,6 +136,7 @@ void UART_WriteChar(uint8_t data)
  */
 void UART_WriteString(const char* str)
 {
+    
     while(*str)
     {
         UART_WriteChar(*str++);
