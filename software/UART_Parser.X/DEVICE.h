@@ -1,27 +1,6 @@
-/* Microchip Technology Inc. and its subsidiaries.  You may use this software 
- * and any derivatives exclusively with Microchip products. 
- * 
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".  NO WARRANTIES, WHETHER 
- * EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
- * WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A 
- * PARTICULAR PURPOSE, OR ITS INTERACTION WITH MICROCHIP PRODUCTS, COMBINATION 
- * WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION. 
- *
- * IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
- * INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
- * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
- * BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE 
- * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS 
- * IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF 
- * ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *
- * MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE 
- * TERMS. 
- */
-
 /* 
  * File:   
- * Author: 
+ * Author: erhan
  * Comments:
  * Revision history: 
  */
@@ -36,17 +15,17 @@
 
 typedef struct Device
 {
-    const char* name;                    // cihaz ad?
+    const char* name;                    // device name
     volatile unsigned char* tris;        // TRIS register pointer
     volatile unsigned char* port;        // PORT register pointer
-    volatile unsigned char* lat;         // LAT register pointer (PIC32 varsa)
-    uint8_t pin;                         // pin numaras?
+    volatile unsigned char* lat;         // LAT register pointer (only PIC32)
+    uint8_t pin;                         // pin number
 
-    void (*On)(struct Device* dev);      // açma fonksiyonu
-    void (*Off)(struct Device* dev);     // kapama fonksiyonu
+    void (*On)(struct Device* dev);      // turn on function
+    void (*Off)(struct Device* dev);     // turn off function
 } Device;
 
-/* Fonksiyon prototipleri */
+/* Function prototypes */
 void Generic_On(Device* dev);
 void Generic_Off(Device* dev);
 void Device_Init(Device* devices, uint8_t deviceCount);

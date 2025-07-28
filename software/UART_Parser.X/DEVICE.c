@@ -8,19 +8,20 @@
 #include "DEVICE.h"
 #include <string.h>
 
+
 void Generic_On(Device* dev)
 {
-    *(dev->tris) &= ~(1 << dev->pin);  // ç?k?? yap
+    *(dev->tris) &= ~(1 << dev->pin);  // set output
     *(dev->port) |=  (1 << dev->pin);  // pin set
 }
 
 void Generic_Off(Device* dev)
 {
-    *(dev->tris) &= ~(1 << dev->pin);  // ç?k?? yap
+    *(dev->tris) &= ~(1 << dev->pin);  // set output
     *(dev->port) &= ~(1 << dev->pin);  // pin reset
 }
 
-/* Tüm cihazlar? ba?lang?çta kapal? yap */
+/* Turn off all devices at startup */
 void Device_Init(Device* devices, uint8_t deviceCount)
 {
     for(uint8_t i = 0; i < deviceCount; i++)
@@ -30,7 +31,7 @@ void Device_Init(Device* devices, uint8_t deviceCount)
     }
 }
 
-/* Cihaz ad? + komutu çal??t?r */
+/* Device name + command */
 bool Device_Execute(Device* devices, uint8_t deviceCount, const char* name, const char* command)
 {
     for(uint8_t i = 0; i < deviceCount; i++)

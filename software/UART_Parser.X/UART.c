@@ -155,45 +155,6 @@ void UART_ReceiveHandler(uint8_t data)
 }
 
 /**
- * @brief Parse string receive from UART
- * @param Pointer to buffer where received line will be stored
- */
-/*void UART_Parse(const char* msg)
-{
-    char temp[LINE_BUFFER_SIZE];
-    char* res = strncpy(temp,msg,LINE_BUFFER_SIZE-1);
-    temp[LINE_BUFFER_SIZE-1] = '\0';
-    
-    char *device = strtok(temp, ":");
-    char *command = strtok(NULL, "");
-    
-    if(device && command)
-    {
-        if(strcmp(device,"led")==0)
-        {
-            if(strcmp(command,"on")==0)
-            {
-                LED_On();   
-            }
-            else if(strcmp(command,"off")==0)
-            {
-                LED_Off();
-            }
-        }
-    }
-}
-
-void LED_On(void)
-{
-    PORTBbits.RB6 = 1;
-}
-
-void LED_Off(void)
-{
-    PORTBbits.RB6 = 0;
-}*/
-
-/**
  * @brief Read a single byte from RX buffer
  * 
  * @return Received byte (0 if buffer empty)
