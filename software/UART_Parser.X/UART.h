@@ -56,4 +56,3 @@ void LED_Off(void);
 extern volatile bool uartTimeout;
 
 #endif	/* UART_H */
-

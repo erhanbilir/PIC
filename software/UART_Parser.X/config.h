@@ -31,9 +31,9 @@
 #define _XTAL_FREQ 16000000
 #define __IO volatile
 
+#include <string.h>
 #include "ISR.h"
 #include "UART.h"
 #include "TIMER.h"
 
 #endif	/* CONFIG_H */
-
