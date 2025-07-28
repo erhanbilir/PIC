@@ -12,8 +12,9 @@
 #include "DEVICE.h"
 
 void __interrupt() ISR(void);
+void Fan_On(Device* dev);
+void Fan_Off(Device* dev);
 __IO bool uartTimeout = false;
-
 
 Device devices[] =
 {
@@ -32,8 +33,8 @@ Device devices[] =
         .port = &PORTB,
         .lat  = NULL,
         .pin  = 7,
-        .On   = Generic_On,
-        .Off  = Generic_Off
+        .On   = Fan_On,
+        .Off  = Fan_Off
     }
 };
 const uint8_t deviceCount = sizeof(devices)/sizeof(devices[0]);
@@ -41,10 +42,8 @@ const uint8_t deviceCount = sizeof(devices)/sizeof(devices[0]);
 
 void main(void) {
     UART_Init_TypeDef UART1 = {.sync = 0, .brgh = 1, .gen_reg = 25};
-    TRISBbits.TRISB6 = 0;
-    PORTBbits.RB6 = 0;
-
     UART_Init(&UART1);
+    Device_Init(devices, deviceCount);
     ISR_Init();
     
     Device_Init(devices, deviceCount);
@@ -66,6 +65,20 @@ void main(void) {
             UART_WriteString("\r\n");
         }
     }
+}
+
+void Fan_On(Device* dev)
+{
+    *(dev->tris) &= ~(1 << dev->pin);
+    *(dev->port) |=  (1 << dev->pin);
+    UART_WriteString("Fan started\r\n");
+}
+
+void Fan_Off(Device* dev)
+{
+    *(dev->tris) &= ~(1 << dev->pin);
+    *(dev->port) &= ~(1 << dev->pin);
+    UART_WriteString("Fan stopped\r\n");
 }
 
 void __interrupt() ISR(void)
