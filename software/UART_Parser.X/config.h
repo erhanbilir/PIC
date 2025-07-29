@@ -32,6 +32,7 @@
 #define __IO volatile
 
 #include <string.h>
+#include "stdio.h"
 #include "ISR.h"
 #include "UART.h"
 #include "TIMER.h"

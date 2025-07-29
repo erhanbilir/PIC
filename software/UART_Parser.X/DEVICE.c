@@ -7,6 +7,7 @@
 
 #include "DEVICE.h"
 #include <string.h>
+#include <stdlib.h>
 
 
 void Generic_On(Device* dev)
@@ -26,13 +27,20 @@ void Device_Init(Device* devices, uint8_t deviceCount)
 {
     for(uint8_t i = 0; i < deviceCount; i++)
     {
-        *(devices[i].tris) &= ~(1 << devices[i].pin);
-        *(devices[i].port) &= ~(1 << devices[i].pin);
+        if(devices[i].Init)
+        {
+            devices[i].Init(&devices[i]);
+        }
+        else
+        {
+            *(devices[i].tris) &= ~(1 << devices[i].pin);
+            *(devices[i].port) &= ~(1 << devices[i].pin);
+        }
     }
 }
 
 /* Device name + command */
-bool Device_Execute(Device* devices, uint8_t deviceCount, const char* name, const char* command)
+bool Device_Execute(Device* devices, uint8_t deviceCount, const char* name, const char* command, const char* value)
 {
     for(uint8_t i = 0; i < deviceCount; i++)
     {
@@ -46,6 +54,15 @@ bool Device_Execute(Device* devices, uint8_t deviceCount, const char* name, cons
             else if(strcmp(command, "off") == 0)
             {
                 devices[i].Off(&devices[i]);
+                return true;
+            }
+            else if(strcmp(command, "setValue") == 0)
+            {
+                if(devices[i].SetValue && value != NULL)
+                {
+                    uint8_t val = (uint8_t)atoi(value);
+                    devices[i].SetValue(&devices[i],val);
+                }
                 return true;
             }
         }

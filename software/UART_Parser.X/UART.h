@@ -14,9 +14,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define RX_BUFFER_SIZE 32
-#define TX_BUFFER_SIZE 32
-#define LINE_BUFFER_SIZE 64
+#define RX_BUFFER_SIZE 16
+#define TX_BUFFER_SIZE 16
+#define LINE_BUFFER_SIZE 32
 
 #define BLOCKING 1
 #define NON_BLOCKING 0
