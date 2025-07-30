@@ -24,15 +24,16 @@ void main(void) {
     PWM_Init();
     
     uint16_t duty = 0;
+    PWM_SetDuty(200);
     while(1)
     {
-        PWM_SetDuty(duty);
+        /*PWM_SetDuty(duty);
         __delay_ms(20);
         duty++;
         if(duty >= 399)
         {
             duty = 0;
-        }
+        }*/
     }
     
     return;
