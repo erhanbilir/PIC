@@ -2,10 +2,11 @@
  * File:   UART.c
  * Author: erhan
  *
- * Created on July 23, 2025, 5:23 PM
+ * Created on July 25, 2025, 9:35 AM
  */
 
 #include "UART.h"
+#include <string.h>
 
 /*!< Global buffers and indices */
 static __IO uint8_t rxBuffer[RX_BUFFER_SIZE];
@@ -79,21 +80,6 @@ void ISR_UART(void)
     }
 }
 
-/**st
- * @brief Reads one byte from UART and handles errors
- * @param data Pointer to variable where received byte will be stored
- */
-void UART_ReceiveHandler(uint8_t data)
-{
-    uint8_t nextHead = (rxHead + 1) % RX_BUFFER_SIZE;
-    
-    if(nextHead != rxTail)
-    {
-        rxBuffer[rxHead] = data;
-        rxHead = nextHead;
-    }
-}
-
 /**
  * @brief Starts UART transmission (enable TX interrupt)
  */
@@ -154,6 +140,21 @@ bool UART_Available(void)
 }
 
 /**
+ * @brief Reads one byte from UART and handles errors
+ * @param data Pointer to variable where received byte will be stored
+ */
+void UART_ReceiveHandler(uint8_t data)
+{
+    uint8_t nextHead = (rxHead + 1) % RX_BUFFER_SIZE;
+    
+    if(nextHead != rxTail)
+    {
+        rxBuffer[rxHead] = data;
+        rxHead = nextHead;
+    }
+}
+
+/**
  * @brief Read a single byte from RX buffer
  * 
  * @return Received byte (0 if buffer empty)
@@ -185,8 +186,7 @@ bool UART_ReadLine(char *outBuffer)
         if(c == '\n' || c == '\r')
         {
             lineBuffer[lineIdx] = '\0';
-            for(uint8_t i=0; i<=lineIdx; i++)
-                outBuffer[i] = lineBuffer[i];
+            strcpy(outBuffer, lineBuffer);
             lineIdx = 0;
             return true;
         }

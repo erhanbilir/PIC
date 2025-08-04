@@ -14,8 +14,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define RX_BUFFER_SIZE 32
-#define TX_BUFFER_SIZE 32
+#define RX_BUFFER_SIZE 16
+#define TX_BUFFER_SIZE 16
 #define LINE_BUFFER_SIZE 32
 
 #define BLOCKING 1
@@ -53,5 +53,6 @@ void UART_Parse(const char* msg);
 void LED_On(void);
 void LED_Off(void);
 
+extern volatile bool uartTimeout;
 
 #endif	/* UART_H */

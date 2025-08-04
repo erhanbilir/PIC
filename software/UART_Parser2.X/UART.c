@@ -99,12 +99,17 @@ void UART_WriteChar(uint8_t data)
 {
     uint8_t nextTail = (txTail + 1) % TX_BUFFER_SIZE;
     
-    /*if(nextTail == txHead)
+    if(nextTail == txHead)
     {
-        //for(int i = 0; i < UART_TX_TIMEOUT; i++);
-        txHead = (txHead + 1) % TX_BUFFER_SIZE;
-    }*/
-    
+        TIMER0_init();
+
+        while(nextTail == txHead && !uartTimeout);
+        if(uartTimeout)
+        {
+            txHead = (txHead + 1) % TX_BUFFER_SIZE;
+            //return;
+        }
+    }
     
     txBuffer[txTail] = data;
     txTail = nextTail;
