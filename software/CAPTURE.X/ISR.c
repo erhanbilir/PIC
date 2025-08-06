@@ -12,8 +12,10 @@
  */
 void ISR_Init(void)
 {
-    INTCONbits.GIE = 1;
-    INTCONbits.PEIE = 1;
     PIE1bits.TXIE = 1;
     PIE1bits.RCIE = 1;
+    PIE1bits.CCP1IE = 1;
+    PIE1bits.TMR1IE = 1;
+    INTCONbits.GIE = 1;
+    INTCONbits.PEIE = 1;
 }
