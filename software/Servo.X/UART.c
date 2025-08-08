@@ -117,16 +117,24 @@ void UART_WriteChar(uint8_t data)
  */
 void UART_WriteString(const char* str)
 {
-    
     while(*str)
     {
         UART_WriteChar(*str++);
     }
 }
 
+/**
+ * @brief Sends a float number via UART.
+ * 
+ * This function transmits a floating-point number over UART
+ * character by character according to the specified number of decimal places.
+ * If the number is negative, a '-' sign is sent first.
+ * 
+ * @param number The float number to be sent.
+ * @param decimalPlaces Number of digits to display after the decimal point.
+ */
 void UART_WriteFloat(float number, uint8_t decimalPlaces)
 {
-
     if (number < 0) {
         UART_WriteChar('-');
         number = -number;

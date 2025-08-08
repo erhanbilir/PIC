@@ -22,7 +22,6 @@ float Calculate_Degree(uint16_t duty);
 
 char command[1];
 
-
 void main(void) {
     ISR_Init();
     UART_Init_TypeDef UART1 = {.sync = 0, .brgh = 1, .gen_reg = 20}; // 2400 baud
@@ -58,19 +57,7 @@ void main(void) {
             }
             PWM_SetDuty(duty);
         }
-        /*PWM_SetDuty(50);
-        __delay_ms(1000);
-        
-        PWM_SetDuty(75);
-        __delay_ms(1000);
-        
-        PWM_SetDuty(100);
-        __delay_ms(1000);
-        
-        PWM_SetDuty(75);
-        __delay_ms(1000);*/
     }
-    
     return;
 }
 
@@ -111,6 +98,17 @@ void PWM_SetDuty(uint16_t duty)
     CCPR1L = (uint8_t)(duty >> 2);
 }
 
+/**
+ * @brief Calculates servo motor angle (degree) from PWM duty cycle.
+ * 
+ * This function converts the input PWM duty cycle value to
+ * the corresponding servo angle in degrees. The calculation
+ * assumes a linear relationship between duty cycle and angle,
+ * adjusted by an offset and scaling factor.
+ * 
+ * @param duty PWM duty cycle value (usually in timer counts or similar units).
+ * @return float Calculated servo angle in degrees.
+ */
 float Calculate_Degree(uint16_t duty)
 {
     return (float)(((duty-50) * (3.6)) + 0.005);
