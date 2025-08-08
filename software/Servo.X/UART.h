@@ -14,9 +14,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define RX_BUFFER_SIZE 32
-#define TX_BUFFER_SIZE 32
-#define LINE_BUFFER_SIZE 32
+#define RX_BUFFER_SIZE 16
+#define TX_BUFFER_SIZE 16
+#define LINE_BUFFER_SIZE 16
 
 #define BLOCKING 1
 #define NON_BLOCKING 0
@@ -45,9 +45,10 @@ void UART_Init(UART_Init_TypeDef *UART_ConfigStruct);
 void UART_StartTransmission(void);
 void UART_WriteChar(uint8_t data);
 void UART_WriteString(const char *str);
+void UART_WriteFloat(float number, uint8_t decimalPlaces);
 void UART_ReceiveHandler(uint8_t data);
 bool UART_Available(void);
-uint8_t UART_ReadChar(void);
+char UART_ReadChar(void);
 bool UART_ReadLine(char *outBuffer);
 void UART_Parse(const char* msg);
 void LED_On(void);

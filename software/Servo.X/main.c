@@ -6,24 +6,59 @@
  */
 #define _XTAL_FREQ 800000
 #include "config.h"
+#include "ISR.h"
+#include "UART.h"
 
 void IO_Init(void);
 void PWM_Init(void);
 void PWM_SetDuty(uint16_t duty);
+void __interrupt() ISR(void);
+float Calculate_Degree(uint16_t duty);
+
 
 /*!< PWM Period = [(PR2) + 1] * 4 * TOSC * (TMR2 Prescale Value)               */
 /*!< PWM Duty Cycle =(CCPR1L:CCP1CON<5:4>) * TOSC * (TMR2 Prescale Value)      */
 /*!< Duty cycle ratio = value / (4 * (PR2 + 1))                                */
 
+char command[1];
+
+
 void main(void) {
+    ISR_Init();
+    UART_Init_TypeDef UART1 = {.sync = 0, .brgh = 1, .gen_reg = 20}; // 2400 baud
+    UART_Init(&UART1);
+    char msg[20] = "program started\n\r";
+    UART_WriteString(msg);
     IO_Init();
     PWM_Init();
-    
-    PWM_SetDuty(32);
-    bool turn = false;
+    uint16_t duty = 50;
+    float f;
+    PWM_SetDuty(duty);
     while(1)
     {
-        PWM_SetDuty(50);
+        if(UART_ReadLine(command))
+        {
+            if(command[0] == '-')
+            {
+                if(duty > 50)
+                    duty--;
+                UART_WriteString("Servo set ");
+                f = Calculate_Degree(duty);
+                UART_WriteFloat(f,2);
+                UART_WriteString(" degree\n\r");
+            }
+            if(command[0] == '+')
+            {
+                if(duty < 100)
+                    duty++;
+                UART_WriteString("Servo set ");
+                f = Calculate_Degree(duty);
+                UART_WriteFloat(f,2);
+                UART_WriteString(" degree\n\r");
+            }
+            PWM_SetDuty(duty);
+        }
+        /*PWM_SetDuty(50);
         __delay_ms(1000);
         
         PWM_SetDuty(75);
@@ -33,7 +68,7 @@ void main(void) {
         __delay_ms(1000);
         
         PWM_SetDuty(75);
-        __delay_ms(1000);
+        __delay_ms(1000);*/
     }
     
     return;
@@ -45,8 +80,8 @@ void main(void) {
  */
 void IO_Init(void)
 {
-    TRISC = 0x00;
-    PORTC = 0x00;
+    TRISCbits.TRISC2 = 0;
+    PORTCbits.RC2 = 0;
 }
 
 /**
@@ -73,5 +108,22 @@ void PWM_SetDuty(uint16_t duty)
     CCP1CONbits.CCP1X = (duty >> 1) & 0x01;  // Bit 1
     
     /*!< Higher 8 bits */
-    CCPR1L = duty >> 2;
+    CCPR1L = (uint8_t)(duty >> 2);
+}
+
+float Calculate_Degree(uint16_t duty)
+{
+    return (float)(((duty-50) * (3.6)) + 0.005);
+}
+
+void __interrupt() ISR(void)
+{
+    if (PIR1bits.RCIF)
+    {
+        ISR_UART();
+    }
+    if (PIR1bits.TXIF)
+    {
+        ISR_UART();
+    }
 }

@@ -124,6 +124,42 @@ void UART_WriteString(const char* str)
     }
 }
 
+void UART_WriteFloat(float number, uint8_t decimalPlaces)
+{
+
+    if (number < 0) {
+        UART_WriteChar('-');
+        number = -number;
+    }
+
+    uint16_t intPart = (uint16_t)number;
+    char buffer[6];
+    uint8_t i = 0;
+
+    if (intPart == 0) {
+        UART_WriteChar('0');
+    } else {
+        while (intPart > 0) {
+            buffer[i++] = (intPart % 10) + '0';
+            intPart /= 10;
+        }
+        while (i > 0) {
+            UART_WriteChar(buffer[--i]);
+        }
+    }
+
+    if (decimalPlaces > 0) {
+        UART_WriteChar('.');
+        float frac = number - (uint16_t)number;
+        for (uint8_t j = 0; j < decimalPlaces; j++) {
+            frac *= 10;
+            uint8_t digit = (uint8_t)frac;
+            UART_WriteChar(digit + '0');
+            frac -= digit;
+        }
+    }
+}
+
 /**
  * @brief Check if there is data available in RX buffer
  * 
@@ -154,7 +190,7 @@ void UART_ReceiveHandler(uint8_t data)
  * 
  * @return Received byte (0 if buffer empty)
  */
-uint8_t UART_ReadChar(void)
+char UART_ReadChar(void)
 {
     uint8_t data = 0;
     if(rxHead != rxTail)

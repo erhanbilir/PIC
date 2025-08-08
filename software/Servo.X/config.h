@@ -26,5 +26,6 @@
 #include <xc.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #endif	/* CONFIG_H */
 
