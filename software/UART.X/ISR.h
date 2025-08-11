@@ -14,6 +14,7 @@
 #include "config.h"
 
 void ISR_Init(void);
+void ISR_Enable(void);
+void ISR_Disable(void);
 
 #endif	/* XC_HEADER_TEMPLATE_H */
-

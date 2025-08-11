@@ -19,13 +19,3 @@ void ISR_Init(void)
     INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;
 }
-
-void ISR_Enable(void)
-{
-    INTCONbits.GIE = 1;
-}
-
-void ISR_Disable(void)
-{
-    INTCONbits.GIE = 0;
-}
