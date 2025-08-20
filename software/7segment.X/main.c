@@ -30,18 +30,11 @@ void main(void) {
     
     unsigned char num = 78;
     unsigned char i, j;
+    i = num / 10;
+    j = num % 10;
     
     unsigned char digits[10] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7C,0x07,0x7F,0x6F};
-    /*int i = 0;
-    while(1)
-    {
-        if(i==10)
-            i = 0;
-        PORTC |= digits[i];
-        __delay_ms(600);
-        PORTC &= ~(digits[i]);
-        i++;
-    }*/
+    
     while(1)
     {
         PORTB |= digits[i];
