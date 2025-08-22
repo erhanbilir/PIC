@@ -1,6 +1,6 @@
 /* 
  * File:   
- * Author: 
+ * Author: erhan
  * Comments:
  * Revision history: 
  */
@@ -16,12 +16,12 @@
 
 #define RX_BUFFER_SIZE 32
 #define TX_BUFFER_SIZE 32
-#define LINE_BUFFER_SIZE 64
+#define LINE_BUFFER_SIZE 32
 
 #define BLOCKING 1
 #define NON_BLOCKING 0
 
-#define UART_TX_TIMEOUT 100000U 
+#define UART_TX_TIMEOUT 10000U 
 
 /**
  * @brief Structure for UART configuration parameters
@@ -33,18 +33,27 @@ typedef struct
     uint8_t brgh;
 }UART_Init_TypeDef;
 
+typedef enum
+{
+    MSG_LED_ON = 0x0U,
+    MSG_LED_OFF = !MSG_LED_ON,
+}Message_TypeDef;
+
 /*!< Function prototypes */
 void ISR_UART(void);
 void UART_Init(UART_Init_TypeDef *UART_ConfigStruct);
 void UART_StartTransmission(void);
 void UART_WriteChar(uint8_t data);
 void UART_WriteString(const char *str);
+void UART_WriteFloat(float number, uint8_t decimalPlaces);
 void UART_ReceiveHandler(uint8_t data);
 bool UART_Available(void);
-uint8_t UART_ReadChar(void);
+char UART_ReadChar(void);
+uint8_t UART_ReadByte(void);
 bool UART_ReadLine(char *outBuffer);
+void UART_Parse(const char* msg);
+void LED_On(void);
+void LED_Off(void);
 
-extern volatile bool uartTimeout;
 
 #endif	/* UART_H */
-
